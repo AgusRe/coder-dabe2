@@ -1,16 +1,27 @@
-import mongoose from 'mongoose';
-import app from './app.js';
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+import app from "./app.js";
 
-const PORT = process.env.PORT || 3000;
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/coder_dabe2';
+dotenv.config();
 
-mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        console.log('✅ MongoDB conectado');
-        app.listen(PORT, () => console.log(`🚀 Servidor escuchando en el puerto ${PORT}`));
-    })
-    .catch(err => {
-        console.error('Error de conexiòn con MongoDB:', err);
-        process.exit(1);
-    })
-;
+const PORT = process.env.PORT || 8080;
+const MONGO_URI = process.env.MONGO_URI;
+
+if (!MONGO_URI) {
+  console.error("❌ ERROR: La variable MONGO_URI no está definida en .env");
+  process.exit(1);
+}
+
+mongoose
+  .connect(MONGO_URI, { dbName: "ecommerce" })
+  .then(() => {
+    console.log("✅ MongoDB conectado con éxito");
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Servidor escuchando en el puerto ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Error de conexión en MongoDB:", err);
+    process.exit(1);
+  });

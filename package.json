@@ -1,26 +1,21 @@
 {
-  "name": "class-zero-hands-on-labs",
-  "type": "module",
+  "name": "coder-dabe2",
   "version": "1.0.0",
-  "description": "Desarrollo Avanzado de Backend 2 - Coderhouse",
-  "main": "app.js",
+  "type": "module",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/app.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js"
   },
-  "keywords": [],
-  "author": "Joaquin Cejas",
-  "license": "ISC",
   "dependencies": {
-    "bcrypt": "^6.0.0",
-    "body-parser": "^2.2.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^17.2.3",
+    "dotenv": "^16.6.1",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.8.7",
-    "passport": "^0.7.0",
+    "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0"
   },
