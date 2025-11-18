@@ -1,5 +1,6 @@
 import {Router} from 'express';
-import userModel from '../models/user.model.js';
+import User from '../models/user.model.js';
+import { createHash } from '../utils/hash.js';
 
 const router = Router();
 
