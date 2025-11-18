@@ -22,20 +22,35 @@ router.get('/', async (req, res) => {
 
 // Crear un usuario
 router.post('/', async (req, res) => {
-    
-    const {name, age, email} = req.body;
-    try {
-        const result = await userModel.create({name, age, email});
-        res.send({
-            status: 'success',
-            payload: result
-        });
-    } catch (error) {
-        res.status(400).send({
-            status: 'error',
-            message: error.message
-        });
+  try {
+    const { first_name, last_name, email, age, password } = req.body;
+
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({
+        status: "error",
+        message: "Todos los campos obligatorios son requeridos"
+      });
     }
+
+    const newUser = await User.create({
+      first_name,
+      last_name,
+      email,
+      age,
+      password: createHash(password),
+    });
+
+    res.status(201).json({
+      status: "success",
+      user: newUser
+    });
+
+  } catch (err) {
+    res.status(400).json({
+      status: "error",
+      message: err.message
+    });
+  }
 });
 
 // Actualizar un usuario
