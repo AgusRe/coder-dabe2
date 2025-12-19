@@ -1,35 +1,44 @@
 import User from '../models/user.model.js';
-import { createHash } from '../utils/hash.js';
+
+const usersRepository = new UsersRepository();
 
 export const createUser = async (req, res) => {
-    try {
-        const { first_name, last_name, email, age, password, cart, role } = req.body;
-        if (!first_name || !last_name || !email || !password) {
-        return res.status(400).json({ status: 'error', message: 'Missing required fields' });
-        }
-        const exists = await User.findOne({ email });
-        if (exists) return res.status(400).json({ status: 'error', message: 'Email already registered' });
-        const user = await User.create({
-        first_name,
-        last_name,
-        email,
-        age,
-        password: createHash(password),
-        cart,
-        role
-        });
-        // Nunca retornar la contraseña
-        const userSafe = user.toObject();
-        delete userSafe.password;
-        res.status(201).json({ status: 'success', user: userSafe });
-    } catch (err) {
-        res.status(500).json({ status: 'error', message: err.message });
+  try {
+    const user = await usersRepository.createUser(req.body);
+
+    res.status(201).json({
+      status: "success",
+      payload: user
+    });
+  } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        status: "error",
+        message: "El email ya está registrado"
+      });
     }
+
+    res.status(500).json({
+      status: "error",
+      message: error.message
+    });
+  }
 };
 
 export const getUsers = async (req, res) => {
-    const users = await User.find().select('-password');
-    res.json({ status: 'success', users });
+  try {
+    const users = await usersRepository.getUsers();
+
+    res.json({
+      status: 'success',
+      payload: users
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 'error',
+      message: error.message
+    });
+  }
 };
 
 export const getUserById = async (req, res) => {
