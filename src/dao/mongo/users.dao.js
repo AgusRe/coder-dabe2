@@ -1,15 +1,23 @@
-import UserModel from '../models/user.model.js';
+import UserModel from '../../models/user.model.js';
 
 export default class UsersDAO {
-  async getUsers() {
+  getAll = async () => {
     return await UserModel.find();
-  }
+  };
 
-  async createUser(userData) {
+  getById = async (id) => {
+    return await UserModel.findById(id);
+  };
+
+  create = async (userData) => {
     return await UserModel.create(userData);
-  }
+  };
 
-  async getUserByEmail(email) {
-    return await UserModel.findOne({ email });
-  }
+  update = async (id, userData) => {
+    return await UserModel.updateOne({ _id: id }, userData);
+  };
+
+  delete = async (id) => {
+    return await UserModel.deleteOne({ _id: id });
+  };
 }
